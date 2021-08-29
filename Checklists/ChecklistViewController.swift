@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController, AddItemViewControllerDelegate {
+class ChecklistViewController: UITableViewController, ItemDetailViewController {
     
     //MARK: - Add Item ViewController Delegates
     
@@ -15,7 +15,7 @@ class ChecklistViewController: UITableViewController, AddItemViewControllerDeleg
         navigationController?.popViewController(animated: true)
     }
     
-    func addItemViewController(_ controller: AddItemViewController, didFinishEditing item: ChecklistItem){
+    func itemDetailViewController(_ controller: AddItemViewController, didFinishAdding item: ChecklistItem){
         if let index = items.firstIndex(of: item)
         {
             let indexPath = IndexPath(row: index, section: 0)
