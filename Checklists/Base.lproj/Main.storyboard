@@ -102,11 +102,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Item" id="vsq-F6-sR1">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="R1m-Ot-wnD">
-                            <connections>
-                                <action selector="cancel" destination="gWZ-Xx-B95" id="Bu5-bW-Wa5"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="R1m-Ot-wnD"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" style="done" systemItem="done" id="HkM-jc-XBi">
                             <connections>
                                 <action selector="done" destination="gWZ-Xx-B95" id="MBy-nc-7iD"/>
@@ -115,7 +111,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneBarButton" destination="HkM-jc-XBi" id="KPm-cP-rmP"/>
-                        <outlet property="textField" destination="xDp-8t-nIs" id="4vB-O9-d1m"/>
+                        <outlet property="textField" destination="xDp-8t-nIs" id="SHA-bV-Tbb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0dR-dj-qO9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
