@@ -7,21 +7,21 @@
 
 import UIKit
 
-protocol ItemDetailViewController: class {
-    func itemDetailViewControllerDidCancel(_ controller: itemDetailViewController)
+protocol ItemDetailViewControllerDelegate: class {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController)
     
-    func itemDetailViewController(_ controller: itemDetailViewController, didFinishAdding item: ChecklistItem)
+    func itemDetailViewController(_ controller:ItemDetailViewController, didFinishAdding item: ChecklistItem)
     
-    func itemDetailViewController(_ controller: itemDetailViewController, didFinishEditing item: ChecklistItem)
+    func itemDetailViewController(_ controller: ItemDetailViewController, didFinishEditing item: ChecklistItem)
     }
 
-class itemDetailViewController: UITableViewController, UITextFieldDelegate {
+class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet var textField: UITextField!
     
     @IBOutlet var doneBarButton: UIBarButtonItem!
     
-    weak var delegate: ItemDetailViewController?
+    weak var delegate: ItemDetailViewControllerDelegate?
     
     var itemToEdit: ChecklistItem?
     
@@ -48,8 +48,8 @@ class itemDetailViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func done() {
         if let item = itemToEdit {
         item.text = textField.text!
-            delegate?.itemDetailViewController(self, didFinishEditing: item)}
-        else {
+            delegate?.itemDetailViewController(self, didFinishEditing: item)
+        }else {
             let item = ChecklistItem()
             item.text = textField.text!
             delegate?.itemDetailViewController(self, didFinishAdding: item)
