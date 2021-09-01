@@ -102,7 +102,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Add Item" id="vsq-F6-sR1">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="R1m-Ot-wnD"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="R1m-Ot-wnD">
+                            <connections>
+                                <action selector="cancel" destination="gWZ-Xx-B95" id="pTu-ih-ivl"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" style="done" systemItem="done" id="HkM-jc-XBi">
                             <connections>
                                 <action selector="done" destination="gWZ-Xx-B95" id="MBy-nc-7iD"/>
