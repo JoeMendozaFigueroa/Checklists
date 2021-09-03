@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//This is the class for the label inside the table view cell
 class ChecklistItem: NSObject {
     var text = ""
     var checked = false

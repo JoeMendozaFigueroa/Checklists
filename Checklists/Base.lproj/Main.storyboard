@@ -40,7 +40,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="gWZ-Xx-B95" kind="show" identifier="EditItem" id="PCa-MJ-2f2"/>
+                                    <segue destination="gWZ-Xx-B95" kind="show" identifier="EditItem" trigger="accessoryAction" id="6SU-fw-BDi"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -52,7 +52,6 @@
                     <navigationItem key="navigationItem" title="Checklists" id="Wk0-qF-k2u">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="wJf-iB-BfP">
                             <connections>
-                                <action selector="addItem:" destination="Tjj-Mv-SLe" id="PbM-8Z-maQ"/>
                                 <segue destination="gWZ-Xx-B95" kind="show" identifier="AddItem" id="eMO-Ub-k2J"/>
                             </connections>
                         </barButtonItem>
@@ -142,7 +141,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="PCa-MJ-2f2"/>
+        <segue reference="6SU-fw-BDi"/>
     </inferredMetricsTieBreakers>
     <resources>
         <systemColor name="systemBackgroundColor">

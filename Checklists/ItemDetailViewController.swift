@@ -36,20 +36,21 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
             doneBarButton.isEnabled = true
         }
     }
-    override func viewWillAppear(_ animated:Bool){
+    override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         textField.becomeFirstResponder()
     }
     
     //MARK: - Actions
     @IBAction func cancel() {
-        delegate?.itemDetailViewControllerDidCancel(self)}
+        delegate?.itemDetailViewControllerDidCancel(self)
+    }
     
     @IBAction func done() {
         if let item = itemToEdit {
         item.text = textField.text!
-            delegate?.itemDetailViewController(self, didFinishEditing: item)
-        }else {
+        delegate?.itemDetailViewController(self, didFinishEditing: item)
+        } else {
             let item = ChecklistItem()
             item.text = textField.text!
             delegate?.itemDetailViewController(self, didFinishAdding: item)
@@ -67,10 +68,8 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
         let stringRange = Range(range, in: oldText)!
         let newText = oldText.replacingCharacters(
             in: stringRange, with: string)
-        if newText.isEmpty {
-            doneBarButton.isEnabled = false}
-        else { doneBarButton.isEnabled = true
-        }
+        //This is for the active/disable "Done Button" on the view controller. If there's text inside the "textfield", it's active. If not, then it's not. This is a simple syntex for the more complex one.
+        doneBarButton.isEnabled = !newText.isEmpty
         return true
     }
     
