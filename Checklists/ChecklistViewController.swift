@@ -89,7 +89,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     }
     
     //MARK: - Table View Delegate
-    
+    //This method is to activate or di-activate the checkmark on a selected row.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             let item = items[indexPath.row]
@@ -98,7 +98,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+    //This method lets you delete a row when you slide the item to the left.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         items.remove(at: indexPath.row)
         
@@ -107,10 +107,11 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     }
     
     //MARK: - Add Item ViewController Delegates
+    //This method is for the "Cancel" button on the Navigation Control. When you press it, it returns you back to "Checklist" View Controller.
     func itemDetailViewControllerDidCancel(_ controller: ItemDetailViewController) {
         navigationController?.popViewController(animated: true)
     }
-    
+    //This method allows you to create a new item and added it to the list of the Checklist View Controller.
     func itemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem) {
         let newRowIndex = items.count
         items.append(item)
@@ -121,7 +122,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         
         navigationController?.popViewController(animated: true)
     }
-    
+    //This method allows you to edit an existing item on the Checklist View Controller.
     func itemDetailViewController(_ controller: ItemDetailViewController,didFinishEditing item: ChecklistItem){
         if let index = items.firstIndex(of: item)
         {
