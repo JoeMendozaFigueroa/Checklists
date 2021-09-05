@@ -7,7 +7,7 @@
 
 import Foundation
 //This is the class for the label inside the table view cell
-class ChecklistItem: NSObject {
+class ChecklistItem: NSObject, Codable {
     var text = ""
     var checked = false
 }
