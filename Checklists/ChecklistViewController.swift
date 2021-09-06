@@ -14,13 +14,13 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     /*This is the standard method that Xcode inserts when you start a new viewcontroller*/
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*This syntex is so that the title of the navigation contoller has a title style text.*/
-        navigationController?.navigationBar.prefersLargeTitles = true
+        //This syntex is so that the title of the navigation contoller has a standard style text.
+        navigationItem.largeTitleDisplayMode = .never
         
         loadChecklistItems()
         
         /*The variables below are the contents inside each reusable cell inside the table view.*/
-       /* let item1 = ChecklistItem()
+        let item1 = ChecklistItem()
         item1.text = "Walk the dog"
         items.append(item1)
         
@@ -42,7 +42,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         
         //This will print unto the Debug Screen
         print("Documents folder is \(documentsDirectory())")
-        print("Data file path is \(dataFilePath())")*/
+        print("Data file path is \(dataFilePath())")
     }
     /*This is the method for for when a user selects or deselcts the checkmark label.*/
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem)

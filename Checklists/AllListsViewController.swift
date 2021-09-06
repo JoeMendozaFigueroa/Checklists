@@ -1,6 +1,6 @@
 //
 //  AllListsViewController.swift
-//  Checklists
+//  Checklist
 //
 //  Created by Josue Mendoza on 9/4/21.
 //
@@ -15,12 +15,14 @@ class AllListsViewController: UITableViewController {
         super.viewDidLoad()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 0
     }
 
@@ -32,6 +34,11 @@ class AllListsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.textLabel!.text = "List \(indexPath.row)"
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        performSegue(withIdentifier: "ShowChecklist", sender: nil)
     }
 
 }
