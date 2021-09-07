@@ -9,8 +9,6 @@ import UIKit
 
 class ChecklistViewController: UITableViewController, ItemDetailViewControllerDelegate {
     /*This is the variable that calls for the variables inside the "ChecklistItem.swift" file in the bundle.*/
-    var items = [ChecklistItem]()
-    
     var checklist: Checklist!
     
     /*This is the standard method that Xcode inserts when you start a new viewcontroller*/
@@ -19,32 +17,28 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         //This syntex is so that the title of the navigation contoller has a standard style text.
         navigationItem.largeTitleDisplayMode = .never
         
-        loadChecklistItems()
         
         /*The variables below are the contents inside each reusable cell inside the table view.*/
         let item1 = ChecklistItem()
         item1.text = "Walk the dog"
-        items.append(item1)
+        checklist.items.append(item1)
         
         let item2 = ChecklistItem()
         item2.text = "Brush my teeth"
-        items.append(item2)
+        checklist.items.append(item2)
         
         let item3 = ChecklistItem()
         item3.text = "Learn iOS development"
-        items.append(item3)
+        checklist.items.append(item3)
         
         let item4 = ChecklistItem()
         item4.text = "Soccer practice"
-        items.append(item4)
+        checklist.items.append(item4)
         
         let item5 = ChecklistItem()
         item5.text = "Eat ice cream"
-        items.append(item5)
+        checklist.items.append(item5)
         
-        //This will print unto the Debug Screen
-        print("Documents folder is \(documentsDirectory())")
-        print("Data file path is \(dataFilePath())")
         
         title = checklist.name
     }
@@ -77,7 +71,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
             controller.delegate = self
             
             if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
-                controller.itemToEdit = items[indexPath.row]
+                controller.itemToEdit = checklist.items[indexPath.row]
             }
         }
     }
@@ -85,13 +79,13 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
 //MARK: - Table View Data Source
     /*This is the method to generate rows inside the table view.*/
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return checklist.items.count
     }
     /*This is the method to generate rows fo the variables above.*/
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistItem", for: indexPath)
         
-        let item = items[indexPath.row]
+        let item = checklist.items[indexPath.row]
         
         configureText(for: cell, with: item)//This changes the text inside the cell generated.
         configureCheckmark(for: cell, with: item)
@@ -102,17 +96,17 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     /*This method is to activate or di-activate the checkmark on a selected row.*/
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
-            let item = items[indexPath.row]
+            let item = checklist.items[indexPath.row]
             item.checked.toggle()
             configureCheckmark(for: cell, with: item)
         }
         tableView.deselectRow(at: indexPath, animated: true)
         
-        saveChecklistItems()
+        
     }
     /*This method lets you delete a row when you slide the item to the left.*/
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        items.remove(at: indexPath.row)
+        checklist.items.remove(at: indexPath.row)
         
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
@@ -125,8 +119,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     }
     /*This method allows you to create a new item and added it to the list of the Checklist View Controller.*/
     func itemDetailViewController(_ controller: ItemDetailViewController, didFinishAdding item: ChecklistItem) {
-        let newRowIndex = items.count
-        items.append(item)
+        let newRowIndex = checklist.items.count
+        checklist.items.append(item)
         
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
@@ -134,11 +128,11 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         
         navigationController?.popViewController(animated: true)
         
-        saveChecklistItems()
+        
     }
     /*This method allows you to edit an existing item on the Checklist View Controller.*/
     func itemDetailViewController(_ controller: ItemDetailViewController,didFinishEditing item: ChecklistItem){
-        if let index = items.firstIndex(of: item)
+        if let index = checklist.items.firstIndex(of: item)
         {
             let indexPath = IndexPath(row: index, section: 0)
             if let cell = tableView.cellForRow(at: indexPath) {
@@ -147,43 +141,7 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         }
         navigationController?.popViewController(animated: true)
         
-        saveChecklistItems()
-    }
-    //This method creates a "Documents Directory" for where the contents of your App will be stored.
-    func documentsDirectory() -> URL {
-        let paths = FileManager.default.urls(
-            for: .documentDirectory, in: .userDomainMask)
-        return paths [0]
-    }
-    //This method creates the "Checklists.plist" file into the Document window, where it saves the changes you make to the current status of the app.
-    func dataFilePath() -> URL {
-        return documentsDirectory()
-            .appendingPathComponent("Checklists.plist")
         
     }
-    //This method converts the text into binary data, then saves it to a file inside the documents folder from above.
-    func saveChecklistItems() {
-        let encoder = PropertyListEncoder()
-        //This section of the code takes any errors that may occur and writes them to the Debug screen.
-        do {
-            let data = try encoder.encode(items)
-            try data.write(to: dataFilePath(), options: Data.WritingOptions.atomic)
-        } catch {
-            print("Error encoding item array: \(error.localizedDescription)")
-        }
-    }
-    //This method reloads the saved data from "Checklists.plist" file.
-    func loadChecklistItems() {
-        let path = dataFilePath()
-        if let data = try? Data(contentsOf: path)
-        {
-            let decoder = PropertyListDecoder()
-            do {
-                items = try decoder.decode(
-                    [ChecklistItem].self,from: data)
-            } catch {
-                print("Error decoding item array: \(error.localizedDescription)")
-            }
-        }
-    }
+
 }
