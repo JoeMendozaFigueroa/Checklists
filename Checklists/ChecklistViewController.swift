@@ -11,6 +11,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
     /*This is the variable that calls for the variables inside the "ChecklistItem.swift" file in the bundle.*/
     var items = [ChecklistItem]()
     
+    var checklist: Checklist!
+    
     /*This is the standard method that Xcode inserts when you start a new viewcontroller*/
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,8 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         //This will print unto the Debug Screen
         print("Documents folder is \(documentsDirectory())")
         print("Data file path is \(dataFilePath())")
+        
+        title = checklist.name
     }
     /*This is the method for for when a user selects or deselcts the checkmark label.*/
     func configureCheckmark(for cell: UITableViewCell, with item: ChecklistItem)
