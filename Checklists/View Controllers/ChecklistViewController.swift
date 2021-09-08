@@ -16,30 +16,6 @@ class ChecklistViewController: UITableViewController, ItemDetailViewControllerDe
         super.viewDidLoad()
         //This syntex is so that the title of the navigation contoller has a standard style text.
         navigationItem.largeTitleDisplayMode = .never
-        
-        
-        /*The variables below are the contents inside each reusable cell inside the table view.*/
-        let item1 = ChecklistItem()
-        item1.text = "Walk the dog"
-        checklist.items.append(item1)
-        
-        let item2 = ChecklistItem()
-        item2.text = "Brush my teeth"
-        checklist.items.append(item2)
-        
-        let item3 = ChecklistItem()
-        item3.text = "Learn iOS development"
-        checklist.items.append(item3)
-        
-        let item4 = ChecklistItem()
-        item4.text = "Soccer practice"
-        checklist.items.append(item4)
-        
-        let item5 = ChecklistItem()
-        item5.text = "Eat ice cream"
-        checklist.items.append(item5)
-        
-        
         title = checklist.name
     }
     /*This is the method for for when a user selects or deselcts the checkmark label.*/

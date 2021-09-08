@@ -7,51 +7,38 @@
 
 import UIKit
 
-class AllListsViewController: UITableViewController, ListDetailViewControllerDelegate {
+class AllListsViewController: UITableViewController, ListDetailViewControllerDelegate, UINavigationControllerDelegate {
 
     let cellIdentifier = "ChecklistCell"
     
-    var lists = [Checklist]()
-    
+    var dataModel: DataModel!
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.prefersLargeTitles = true
         tableView.register(UITableViewCell.self,forCellReuseIdentifier: cellIdentifier)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        loadChecklists()
+        navigationController?.delegate = self
         
-        var list = Checklist(name: "Birthdays")
-        lists.append(list)
-        
-        list = Checklist(name: "Groceries")
-        lists.append(list)
-        
-        list = Checklist(name: "Cool Apps")
-        lists.append(list)
-        
-        list = Checklist(name: "To Do")
-        lists.append(list)
-        
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-
-        //MARK: - PLACEHOLDER ITEM DATA
-        for list in lists {
-        let item = ChecklistItem()
-        item.text = "Item for \(list.name)"
-        list.items.append(item)
+        let index = dataModel.indexOfSelectedChecklist
+        if index >= 0 && index < dataModel.lists.count {
+            let checklist = dataModel.lists[index]
+            performSegue(withIdentifier: "ShowChecklist", sender: checklist)
         }
     }
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lists.count
+        return dataModel.lists.count
     }
     //This method places the text of the list varibables.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        let checklist = lists[indexPath.row]
+        let checklist = dataModel.lists[indexPath.row]
         cell.textLabel!.text = checklist.name
         cell.accessoryType = .detailDisclosureButton
         return cell
@@ -59,12 +46,14 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let checklist = lists[indexPath.row]
+        dataModel.indexOfSelectedChecklist = indexPath.row
+        /*UserDefaults.standard.set(indexPath.row, forKey: "ChecklistIndex")*/
+        let checklist = dataModel.lists[indexPath.row]
         performSegue(withIdentifier: "ShowChecklist", sender: checklist)
     }
     /*This method lets you delete a row when you slide the item to the left.*/
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        lists.remove(at: indexPath.row)
+        dataModel.lists.remove(at: indexPath.row)
         
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
@@ -75,7 +64,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         let controller = storyboard!.instantiateViewController(identifier: "ListDetailViewController") as! ListDetailViewController
         controller.delegate = self
         
-        let checklist = lists[indexPath.row]
+        let checklist = dataModel.lists[indexPath.row]
         controller.checklistToEdit = checklist
         
         navigationController?.pushViewController(controller, animated: true)
@@ -95,6 +84,13 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
             controller.delegate = self
         }
     }
+    //MARK: - NAVIGATION CONTROLLER DELEGATES
+        func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
+        {
+            if viewController === self {
+                dataModel.indexOfSelectedChecklist = -1
+            }
+        }
     
     //MARK: - List Detail View Controller Delegates
     
@@ -104,8 +100,8 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     }
     /*This method allows you to create a new item and added it to the list of the Checklist View Controller.*/
     func listDetailViewController(_ controller: ListDetailViewController, didFinishAdding checklist: Checklist) {
-        let newRowIndex = lists.count
-        lists.append(checklist)
+        let newRowIndex = dataModel.lists.count
+        dataModel.lists.append(checklist)
         
         let indexPath = IndexPath(row: newRowIndex, section: 0)
         let indexPaths = [indexPath]
@@ -116,7 +112,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     }
     /*This method allows you to edit an existing item on the Checklist View Controller.*/
     func listDetailViewController(_ controller: ListDetailViewController,didFinishEditing checklist: Checklist){
-        if let index = lists.firstIndex(of: checklist)
+        if let index = dataModel.lists.firstIndex(of: checklist)
         {
             let indexPath = IndexPath(row: index, section: 0)
             if let cell = tableView.cellForRow(at: indexPath) {
@@ -125,41 +121,6 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         }
         navigationController?.popViewController(animated: true)
     }
-    //MARK: - DATA SAVING
-    //This method creates a "Documents Directory" for where the contents of your App will be stored.
-    func documentsDirectory() -> URL {
-        let paths = FileManager.default.urls(
-            for: .documentDirectory, in: .userDomainMask)
-        return paths [0]
-    }
-    //This method creates the "Checklists.plist" file into the Document window, where it saves the changes you make to the current status of the app.
-    func dataFilePath() -> URL {
-        return documentsDirectory() .appendingPathComponent("Checklists.plist")
-        
-    }
-    //This method converts the text into binary data, then saves it to a file inside the documents folder from above.
-    func  saveChecklists() {
-        let encoder = PropertyListEncoder()
-        //This section of the code takes any errors that may occur and writes them to the Debug screen.
-        do {
-            let data = try encoder.encode(lists)
-            try data.write(to: dataFilePath(), options: Data.WritingOptions.atomic)
-        } catch {
-            print("Error encoding item array: \(error.localizedDescription)")
-        }
-    }
-    //This method reloads the saved data from "Checklists.plist" file.
-    func loadChecklists() {
-        let path = dataFilePath()
-        if let data = try? Data(contentsOf: path)
-        {
-            let decoder = PropertyListDecoder()
-            do {
-                lists = try decoder.decode(
-                    [Checklist].self,from: data)
-            } catch {
-                print("Error decoding item array: \(error.localizedDescription)")
-            }
-        }
-    }
+
+
 }
