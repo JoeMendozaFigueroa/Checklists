@@ -76,9 +76,15 @@ class DataModel {
             do {
                 lists = try decoder.decode(
                     [Checklist].self,from: data)
+                sortChecklists()
             } catch {
                 print("Error decoding item array: \(error.localizedDescription)")
             }
+        }
+    }
+    func sortChecklists() {
+        lists.sort { list1, list2 in
+            return list1.name.localizedStandardCompare(list2.name) == .orderedAscending
         }
     }
 }
