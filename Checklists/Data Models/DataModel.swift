@@ -82,6 +82,7 @@ class DataModel {
             }
         }
     }
+    //This method comapres one list of itme to the other and sorts them out Alphabetically
     func sortChecklists() {
         lists.sort { list1, list2 in
             return list1.name.localizedStandardCompare(list2.name) == .orderedAscending
