@@ -4,7 +4,7 @@
 //
 //  Created by Josue Mendoza on 8/27/21.
 //
-
+import UserNotifications
 import UIKit
 
 //This protocol method group is used in "Checklist View Controller" to Cancel, Add, & Edit into the cells.
@@ -23,6 +23,10 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet var doneBarButton: UIBarButtonItem!
     
+    @IBOutlet var shouldRemindSwitch: UISwitch!
+    
+    @IBOutlet var datePicker: UIDatePicker!
+    
     weak var delegate: ItemDetailViewControllerDelegate?
     
     var itemToEdit: ChecklistItem?
@@ -31,11 +35,14 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         //This is the syntext for the title of the "Item Detail View Controller", so that it is not a title text 
         navigationItem.largeTitleDisplayMode = .never
-        
+        //This constant allows user to enter in a new item unto the list.
         if let item = itemToEdit {
             title = "Edit Item"
             textField.text = item.text
             doneBarButton.isEnabled = true
+            
+            shouldRemindSwitch.isOn = item.shouldRemind
+            datePicker.date = item.dueDate
         }
     }
     override func viewWillAppear(_ animated: Bool){
@@ -52,11 +59,29 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func done() {
         if let item = itemToEdit {
         item.text = textField.text!
+        item.shouldRemind = shouldRemindSwitch.isOn
+        item.dueDate = datePicker.date
+        item.scheduleNotification()
+            
         delegate?.itemDetailViewController(self, didFinishEditing: item)
         } else {
             let item = ChecklistItem()
             item.text = textField.text!
+            item.checked = false
+            item.shouldRemind = shouldRemindSwitch.isOn
+            item.dueDate = datePicker.date
+            
             delegate?.itemDetailViewController(self, didFinishAdding: item)
+        }
+    }
+    //This method shows a reminder screen when you switch the reminder button
+    @IBAction func shouldRemindToggled(_ switchControl: UISwitch) {
+        textField.resignFirstResponder()
+        
+        if switchControl.isOn {
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.alert, .sound]) {_, _ in
+            }
         }
     }
     
