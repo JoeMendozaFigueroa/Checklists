@@ -10,7 +10,7 @@ import UIKit
 protocol IconPickerViewControllerDelegate: class {
     func iconPicker(_ picker: IconPickerViewController, didPick iconName: String)
 }
-
+//This class is for the icons that will be displayed inside the "Icon Picker" View Controller
 class IconPickerViewController: UITableViewController {
     weak var delegate: IconPickerViewControllerDelegate?
     

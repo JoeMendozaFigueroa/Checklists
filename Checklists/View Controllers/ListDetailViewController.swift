@@ -31,7 +31,7 @@ class ListDetailViewController: UITableViewController, UITextFieldDelegate, Icon
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //This bool is wether a user wants to edit an item or not and it's to identify all the items on the screen (labels, switch, icons, etc.)
         if let checklist = checklistToEdit {
             title = "Edit Checklist"
             textField.text = checklist.name
@@ -86,6 +86,7 @@ class ListDetailViewController: UITableViewController, UITextFieldDelegate, Icon
     }
     
     //MARK: - ICON PICKER VIEW CONTROLLER DELEGATE
+    //This is the segue to pick an icon for an item on the list.
     func iconPicker(_ picker: IconPickerViewController, didPick iconName: String)
     {
         self.iconName = iconName
@@ -94,6 +95,7 @@ class ListDetailViewController: UITableViewController, UITextFieldDelegate, Icon
     }
     
     //MARK: - NAVIGATION
+    //This method is for when you select an Icon, it brings you back to the previous screen.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.identifier == "PickIcon" {

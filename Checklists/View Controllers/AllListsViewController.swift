@@ -116,7 +116,7 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
     
     //MARK: - List Detail View Controller Delegates
     
-    //This method is for the "Cancel" button on the Navigation Control. When you press it, it returns you back to "Checklist" View Controller.*/
+    /*This method is for the "Cancel" button on the Navigation Control. When you press it, it returns you back to "Checklist" View Controller.*/
     func listDetailViewControllerDidCancel(_ controller: ListDetailViewController) {
         navigationController?.popViewController(animated: true)
     }

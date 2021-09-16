@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+//This class is for the saving and loading of the checklist items you create, when you first run the App.
 class DataModel {
     var lists = [Checklist]()
     
@@ -15,7 +15,6 @@ class DataModel {
         registerDefaults()
         handleFirstTime()
     }
-    
     var indexOfSelectedChecklist: Int{
         get {
             return UserDefaults.standard.integer(forKey: "ChecklistIndex")
@@ -24,13 +23,13 @@ class DataModel {
             UserDefaults.standard.set(newValue, forKey: "ChecklistIndex")
         }
     }
-    
+    //This method registers the items on the list to be saved
     func registerDefaults() {
         let dictionary = [ "ChecklistIndex": -1, "FirstTime": true]
         as [String:Any]
         UserDefaults.standard.register(defaults:dictionary)
     }
-    
+    //This method is to create an item on the checklist
     func handleFirstTime() {
         let userDefaults = UserDefaults.standard
         let firstTime = userDefaults.bool(forKey: "FirstTime")
@@ -59,6 +58,7 @@ class DataModel {
     //This method converts the text into binary data, then saves it to a file inside the documents folder from above.
     func  saveChecklists() {
         let encoder = PropertyListEncoder()
+        
         //This section of the code takes any errors that may occur and writes them to the Debug screen.
         do {
             let data = try encoder.encode(lists)
@@ -82,12 +82,13 @@ class DataModel {
             }
         }
     }
-    //This method comapres one list of itme to the other and sorts them out Alphabetically
+    //This method compares one list of itme to the other and sorts them out Alphabetically
     func sortChecklists() {
         lists.sort { list1, list2 in
             return list1.name.localizedStandardCompare(list2.name) == .orderedAscending
         }
     }
+    //This method catches any new items created on the list and saves them on the file
     class func nextChecklistItemID() -> Int {
         let userDefaults = UserDefaults.standard
         let itemID = userDefaults.integer(forKey: "ChecklistItemID")

@@ -74,10 +74,10 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
             delegate?.itemDetailViewController(self, didFinishAdding: item)
         }
     }
-    //This method shows a reminder screen when you switch the reminder button
+    //This method for the reminder switch. It shows a reminder screen when you switch the reminder button
     @IBAction func shouldRemindToggled(_ switchControl: UISwitch) {
         textField.resignFirstResponder()
-        
+        //This boolean is for wether the user wants to be reminded or not.
         if switchControl.isOn {
             let center = UNUserNotificationCenter.current()
             center.requestAuthorization(options: [.alert, .sound]) {_, _ in
