@@ -22,7 +22,7 @@ class IconPickerViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return icons.count
     }
-//This constant changes the name, of the already implemented image and text, inside a tableview cell
+//This constant changes the name of the already implemented image and text inside a tableview cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IconCell", for: indexPath)
         let iconName = icons[indexPath.row]

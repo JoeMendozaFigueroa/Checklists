@@ -33,9 +33,10 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //This is the syntext for the title of the "Item Detail View Controller", so that it is not a title text 
+        //This syntex changes the tityle style on the view controller
         navigationItem.largeTitleDisplayMode = .never
-        //This constant allows user to enter in a new item unto the list.
+        
+        //This constant changes the title name to "Edit Item" when a user selects the edit icon.
         if let item = itemToEdit {
             title = "Edit Item"
             textField.text = item.text
@@ -51,11 +52,11 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
     }
     
     //MARK: - Actions
-    //This method is for the "Cancel" object, which takes you back to the "Checklist View Controller".
+    //This method is for the "Cancel" button, which takes you back to the "Checklist View Controller".
     @IBAction func cancel() {
         delegate?.itemDetailViewControllerDidCancel(self)
     }
-    //This method is for the "Done" object, which takes you back to the "Checklist View Controller" once your done editing or adding a text cell. This button is "Deactivated" when there's no text in the text field.
+    //This method is for the "Done" button, which takes you back to the "Checklist View Controller" once your done editing or adding a text cell. This button is "Deactivated" when there's no text in the text field.
     @IBAction func done() {
         if let item = itemToEdit {
         item.text = textField.text!
@@ -101,7 +102,7 @@ class ItemDetailViewController: UITableViewController, UITextFieldDelegate {
         doneBarButton.isEnabled = !newText.isEmpty
         return true
     }
-    //This method determines wether the "Done" button on the "Add Item" View Controller is active when there's text in the Text Field object.
+    //This method determines wether the "Done" button is active when there's text in the Text Field.
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         doneBarButton.isEnabled = false
         return true

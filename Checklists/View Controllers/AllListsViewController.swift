@@ -31,15 +31,22 @@ class AllListsViewController: UITableViewController, ListDetailViewControllerDel
         } else { cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)}
         
         let checklist = dataModel.lists[indexPath.row]
+        
         //This constant variable places the subtitle text under the Checklist Item.
         let count = checklist.countUncheckedItems()
+        
         //This boolean determines how many items are checked/unchcecked inside the Checklist
         if checklist.items.count == 0 {
         cell.detailTextLabel!.text = "(No Items)"
-        } else {
-            cell.detailTextLabel!.text = count == 0 ?
-            "All Done" : "\(count) Remaining"
         }
+        if count == 1 {
+            cell.detailTextLabel!.text = "\(count) Item Remaining"
+        }
+        else {
+            cell.detailTextLabel!.text = count == 0 ?
+            "All Done" : "\(count) Items Remaining"
+        }
+        
         
         cell.textLabel!.text = checklist.name
         cell.accessoryType = .detailDisclosureButton
